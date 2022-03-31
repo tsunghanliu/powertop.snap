@@ -27,10 +27,12 @@ apps:
         plugs:
             - cpu-control
             - hardware-observe
+            - home
             - kernel-module-observe
             - netlink-audit
             - power-control
             - raw-usb
+            - system-observe
             - system-trace
 
 parts:
@@ -44,7 +46,6 @@ parts:
         - --prefix=/usr
     override-build: |
         snapcraftctl set-version "$(git describe --tags --always --dirty)"
-        ./autogen.sh
         snapcraftctl build
     stage-packages:
         - libpci3
