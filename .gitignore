@@ -1,0 +1,13 @@
+# snapcraft outputs
+*.snap
+*.snap-build*
+stage
+prime
+parts
+snap/.snapcraft
+
+# general
+*~
+*.bak
+*.swp
+__pycache__

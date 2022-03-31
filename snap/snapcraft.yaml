@@ -1,0 +1,65 @@
+name: powertop-robertliu
+base: core20
+summary: diagnose issues with power consumption and management
+description: |
+ PowerTOP is a Linux tool to diagnose issues with power consumption and
+ power management. In addition to being a diagnostic tool, PowerTOP also
+ has an interactive mode you can use to experiment with various power
+ management settings, for cases where the Linux distribution has not
+ enabled those settings.
+ .
+ PowerTOP reports which components in the system are most likely to blame
+ for higher-than-needed power consumption, ranging from software
+ applications to active components in the system. Detailed screens are
+ available for CPU C and P states, device activity, and software activity.
+
+grade: devel # must be 'stable' to release into candidate/stable channels
+confinement: devmode # use 'strict' once you have the right plugs and slots
+architectures:
+    - build-on: [amd64]
+      run-on: amd64
+adopt-info: powertop
+
+apps:
+    powertop:
+        command: usr/sbin/powertop
+        completer: usr/share/bash-completion/completions/powertop
+        plugs:
+            - cpu-control
+            - hardware-observe
+            - kernel-module-observe
+            - netlink-audit
+            - power-control
+            - raw-usb
+            - system-trace
+
+parts:
+  powertop:
+    # See 'snapcraft plugins'
+    plugin: autotools
+    source: https://github.com/fenrus75/powertop.git
+    #source-depth: 1 ## need full history to get version string
+    source-type: git
+    autotools-configure-parameters:
+        - --prefix=/usr
+    override-build: |
+        snapcraftctl set-version "$(git describe --tags --always --dirty)"
+        ./autogen.sh
+        snapcraftctl build
+    stage-packages:
+        - libpci3
+
+build-packages:
+    - build-essential
+    - libpci-dev
+    - libnl-3-dev
+    - libnl-genl-3-dev
+    - gettext
+    - libgettextpo-dev
+    - autopoint
+    - libncurses5-dev
+    - libncursesw5-dev
+    - libtool-bin
+    - dh-autoreconf
+    - autoconf-archive
+    - pkg-config
