@@ -67,3 +67,9 @@ build-packages:
     - dh-autoreconf
     - autoconf-archive
     - pkg-config
+
+layout:
+    /etc/init.d:
+        bind: $SNAP_DATA
+    /var/cache/powertop:
+        bind: $SNAP_DATA
