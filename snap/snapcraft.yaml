@@ -47,6 +47,9 @@ parts:
     override-build: |
         snapcraftctl set-version "$(git describe --tags --always --dirty)"
         snapcraftctl build
+        # update completion
+        sed -E -i 's/"\$1"/"powertop"/g;s/^(complete .*) powertop$/\1 powertop-robertliu.powertop/g' \
+          $SNAPCRAFT_PART_INSTALL/usr/share/bash-completion/completions/powertop
     stage-packages:
         - libpci3
 
