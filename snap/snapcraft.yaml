@@ -13,8 +13,8 @@ description: |
  applications to active components in the system. Detailed screens are
  available for CPU C and P states, device activity, and software activity.
 
-grade: devel # must be 'stable' to release into candidate/stable channels
-confinement: devmode # use 'strict' once you have the right plugs and slots
+grade: stable
+confinement: strict
 architectures:
     - build-on: [amd64]
       run-on: amd64
