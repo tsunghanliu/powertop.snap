@@ -50,12 +50,15 @@ parts:
         - --prefix=/usr
     override-build: |
         craftctl set version="$(git describe --tags --always --dirty)"
+        sed -i 's/^AM_GNU_GETTEXT_REQUIRE_VERSION/AM_GNU_GETTEXT_VERSION/g' configure.ac
         craftctl default
         # update completion
         sed -E -i 's/"\$1"/"powertop"/g;s/^(complete .*) powertop$/\1 powertop-robertliu.powertop/g' \
           $CRAFT_PART_INSTALL/usr/share/bash-completion/completions/powertop
     stage-packages:
         - libpci3
+        - libtracefs1
+        - libtraceevent1
 
 build-packages:
     - build-essential
@@ -71,6 +74,8 @@ build-packages:
     - dh-autoreconf
     - autoconf-archive
     - pkg-config
+    - libtracefs-dev
+    - libtraceevent-dev
 
 layout:
     /etc/init.d:
