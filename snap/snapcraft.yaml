@@ -1,5 +1,5 @@
 name: powertop-robertliu
-base: core20
+base: core24
 summary: diagnose issues with power consumption and management
 description: |
  PowerTOP is a Linux tool to diagnose issues with power consumption and
@@ -12,12 +12,16 @@ description: |
  for higher-than-needed power consumption, ranging from software
  applications to active components in the system. Detailed screens are
  available for CPU C and P states, device activity, and software activity.
+ .
+ Notice! Connect all interfaces before using this snap. To get everything
+ working, do consider using devmode instead of strict confinement.
 
 grade: stable
 confinement: strict
-architectures:
-    - build-on: [amd64]
-      run-on: amd64
+platforms:
+    amd64:
+        build-on: [amd64]
+        build-for: amd64
 adopt-info: powertop
 
 apps:
@@ -45,11 +49,11 @@ parts:
     autotools-configure-parameters:
         - --prefix=/usr
     override-build: |
-        snapcraftctl set-version "$(git describe --tags --always --dirty)"
-        snapcraftctl build
+        craftctl set version="$(git describe --tags --always --dirty)"
+        craftctl default
         # update completion
         sed -E -i 's/"\$1"/"powertop"/g;s/^(complete .*) powertop$/\1 powertop-robertliu.powertop/g' \
-          $SNAPCRAFT_PART_INSTALL/usr/share/bash-completion/completions/powertop
+          $CRAFT_PART_INSTALL/usr/share/bash-completion/completions/powertop
     stage-packages:
         - libpci3
 
